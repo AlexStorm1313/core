@@ -1,4 +1,4 @@
-FROM fedora:latest
+FROM quay.io/fedora/fedora:latest
 
 ARG USER=core
 ARG UID=1001
@@ -47,6 +47,8 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
         git \
         hostname \
         libpq-devel \
+        nodejs \
+        npm \
         oci-cli \
         opentofu \
         php \
@@ -66,7 +68,9 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     cargo install cargo-lambda && \
     # Install Bun
     curl -fsSL https://bun.sh/install | sh && \
-    bun add -g opencode-ai && \
+    bun add -g openclaw opencode-ai && \
+    # Node for now
+    npm install -g openclaw && \
     # Cleanup
     dnf -y clean all && \
     rm -rf /var/cache/dnf && \
@@ -74,6 +78,7 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
 
 # SHELL setup
 COPY .bashrc.d/ ${HOME}/.bashrc.d/
+RUN echo 'alias openclawx="bunx openclaw"' >> ${HOME}/.bashrc
 RUN echo 'alias opencode="bunx opencode"' >> ${HOME}/.bashrc
 RUN echo 'eval "$(starship init bash)"' >> ${HOME}/.bashrc
 

@@ -12,7 +12,7 @@ on:
     tags:
       - v*
 env:
-  IMAGE_NAME: toolbox
+  IMAGE_NAME: core
 #
 jobs:
   # This pushes the image to GitHub Packages.
