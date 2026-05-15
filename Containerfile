@@ -68,7 +68,7 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
         rsync \
         rustup \
         starship \
-        terraform-ls \
+        # terraform-ls \
         tini \
         unzip \
         which && \
