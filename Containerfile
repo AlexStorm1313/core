@@ -28,6 +28,16 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     rm -f ./session-manager-plugin.rpm && \
     # Register all repos first
     curl -fsSL https://rpm.releases.hashicorp.com/fedora/hashicorp.repo -o /etc/yum.repos.d/hashicorp.repo && \
+    printf '%s\n' \
+        '[gitlab.com_paulcarroty_vscodium_repo]' \
+        'name=gitlab.com_paulcarroty_vscodium_repo' \
+        'baseurl=https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/rpms/' \
+        'enabled=1' \
+        'gpgcheck=1' \
+        'repo_gpgcheck=1' \
+        'gpgkey=https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg' \
+        'metadata_expire=1h' \
+    > /etc/yum.repos.d/vscodium.repo && \
     dnf -y install dnf-plugins-core \
         "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
         "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" && \
@@ -41,14 +51,15 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
         awscli2 \
         azure-cli \
         bash-completion \
+        codium \
         composer \
         fira-code-fonts \
         gcc \
         git \
         hostname \
         libpq-devel \
-        nodejs \
-        npm \
+        # nodejs \
+        # npm \
         oci-cli \
         opentofu \
         php \
@@ -59,7 +70,8 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
         starship \
         terraform-ls \
         tini \
-        unzip && \
+        unzip \
+        which && \
     # Install Rust and Cargo tools
     rustup-init -y --profile=complete --default-toolchain=nightly && \
     cargo install watchexec-cli && \
@@ -70,15 +82,29 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     curl -fsSL https://bun.sh/install | sh && \
     bun add -g openclaw opencode-ai && \
     # Node for now
-    npm install -g openclaw && \
+    # npm install -g openclaw && \
     # Cleanup
     dnf -y clean all && \
     rm -rf /var/cache/dnf && \
     rm -rf ${HOME}/.cargo/registry ${HOME}/.cargo/git
 
+# Install extensions
+RUN codium --user-data-dir ${HOME}/.vscodium-server/data --extensions-dir ${HOME}/.vscodium-server/extensions --force \
+    --install-extension WakaTime.vscode-wakatime \
+    --install-extension rust-lang.rust-analyzer \
+    --install-extension bradlc.vscode-tailwindcss \
+    --install-extension tamasfe.even-better-toml \
+    --install-extension redhat.vscode-yaml \
+    --install-extension fill-labs.dependi \
+    --install-extension ms-toolsai.jupyter \
+    --install-extension ms-azuretools.vscode-docker \
+    --install-extension ms-kubernetes-tools.vscode-kubernetes-tools \
+    --install-extension usernamehw.errorlens \
+    --install-extension HashiCorp.terraform
+
 # SHELL setup
 COPY .bashrc.d/ ${HOME}/.bashrc.d/
-RUN echo 'alias openclawx="bunx openclaw"' >> ${HOME}/.bashrc
+RUN echo 'alias openclaw="bunx openclaw"' >> ${HOME}/.bashrc
 RUN echo 'alias opencode="bunx opencode"' >> ${HOME}/.bashrc
 RUN echo 'eval "$(starship init bash)"' >> ${HOME}/.bashrc
 
