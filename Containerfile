@@ -79,10 +79,12 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     cargo install diesel_cli --no-default-features --features "postgres" && \
     cargo install cargo-lambda && \
     # Install Bun
-    # curl -fsSL https://bun.sh/install | sh && \
+    curl -fsSL https://bun.sh/install | sh && \
     # bun add -g openclaw opencode-ai && \
+    bun add -g opencode-ai && \
     # Node for now
-    npm install -g openclaw opencode-ai && \
+    # npm install -g openclaw opencode-ai && \
+    npm install -g openclaw && \
     # Cleanup
     dnf -y clean all && \
     rm -rf /var/cache/dnf && \
@@ -105,7 +107,7 @@ RUN codium --user-data-dir ${HOME}/.vscodium-server/data --extensions-dir ${HOME
 # SHELL setup
 COPY .bashrc.d/ ${HOME}/.bashrc.d/
 # RUN echo 'alias openclaw="bunx openclaw"' >> ${HOME}/.bashrc
-# RUN echo 'alias opencode="bunx opencode"' >> ${HOME}/.bashrc
+RUN echo 'alias opencode="bunx opencode"' >> ${HOME}/.bashrc
 RUN echo 'eval "$(starship init bash)"' >> ${HOME}/.bashrc
 
 # Changing ownership and user rights to support following use-cases:
