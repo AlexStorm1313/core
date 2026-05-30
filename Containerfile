@@ -1,4 +1,4 @@
-FROM quay.io/fedora/fedora:latest
+FROM quay.io/fedora/fedora:latest@sha256:eb3a209bb9fd42a1e161eb3deb704eb8d6a98e5cdfd187902b1fe3cfffc66553
 
 ARG USER=core
 ARG UID=1001
