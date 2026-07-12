@@ -58,8 +58,6 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     git \
     hostname \
     libpq-devel \
-    nodejs \
-    npm \
     oci-cli \
     opentofu \
     php \
@@ -71,20 +69,17 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     # terraform-ls \
     tini \
     unzip \
+    uv \
     which && \
     # Install Rust and Cargo tools
     rustup-init -y --profile=complete --default-toolchain=nightly && \
-    cargo install watchexec-cli && \
-    cargo install bacon && \
-    cargo install diesel_cli --no-default-features --features "postgres" && \
-    cargo install cargo-lambda && \
+    cargo install --locked watchexec-cli && \
+    cargo install --locked bacon && \
+    cargo install --locked diesel_cli --no-default-features --features "postgres" && \
+    cargo install --locked cargo-lambda && \
     # Install Bun
     curl -fsSL https://bun.sh/install | sh && \
-    # bun add -g openclaw opencode-ai && \
-    bun add -g opencode-ai && \
-    # Node for now
-    # npm install -g openclaw opencode-ai && \
-    npm install -g openclaw && \
+    bun add -g openclaw @openhands/agent-canvas@1.2.0 opencode-ai && \
     # Cleanup
     dnf -y clean all && \
     rm -rf /var/cache/dnf && \
@@ -106,7 +101,8 @@ RUN codium --user-data-dir ${HOME}/.vscodium-server/data --extensions-dir ${HOME
 
 # SHELL setup
 COPY .bashrc.d/ ${HOME}/.bashrc.d/
-# RUN echo 'alias openclaw="bunx openclaw"' >> ${HOME}/.bashrc
+RUN echo 'alias openclaw="bunx openclaw"' >> ${HOME}/.bashrc
+RUN echo 'alias agent-canvas="bunx agent-canvas"' >> ${HOME}/.bashrc
 RUN echo 'alias opencode="bunx opencode"' >> ${HOME}/.bashrc
 RUN echo 'eval "$(starship init bash)"' >> ${HOME}/.bashrc
 
