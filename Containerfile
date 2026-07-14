@@ -18,7 +18,6 @@ ENV LC_ALL=C.UTF-8
 ENV HOME=${HOME}
 ENV SHELL=/bin/bash
 ENV PATH=${HOME}/.cargo/bin:${HOME}/.bun/bin:${HOME}/.local/bin:${PATH}
-ENV SSH_AGENT="${SSH_AGENT:-/tmp/ssh-agent.env}"
 
 RUN groupadd -g ${UID} ${USER} && \
     useradd -u ${UID} -g ${UID} -m -s $SHELL ${USER}
@@ -66,7 +65,7 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     rsync \
     rustup \
     starship \
-    # terraform-ls \
+    terraform-ls \
     tini \
     unzip \
     uv \
@@ -100,7 +99,6 @@ RUN codium --user-data-dir ${HOME}/.vscodium-server/data --extensions-dir ${HOME
     --install-extension HashiCorp.terraform
 
 # SHELL setup
-COPY .bashrc.d/ ${HOME}/.bashrc.d/
 RUN echo 'alias openclaw="bunx openclaw"' >> ${HOME}/.bashrc
 RUN echo 'alias agent-canvas="bunx agent-canvas"' >> ${HOME}/.bashrc
 RUN echo 'alias opencode="bunx opencode"' >> ${HOME}/.bashrc
