@@ -57,6 +57,8 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     git \
     hostname \
     libpq-devel \
+    nodejs \
+    npm \
     oci-cli \
     opentofu \
     php \
