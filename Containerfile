@@ -88,7 +88,6 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
 
 # Install extensions
 RUN codium --user-data-dir ${HOME}/.vscodium-server/data --extensions-dir ${HOME}/.vscodium-server/extensions --force \
-    --install-extension WakaTime.vscode-wakatime \
     --install-extension rust-lang.rust-analyzer \
     --install-extension bradlc.vscode-tailwindcss \
     --install-extension tamasfe.even-better-toml \
