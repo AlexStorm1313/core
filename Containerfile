@@ -60,6 +60,7 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     nodejs \
     npm \
     oci-cli \
+    openssh-server \
     opentofu \
     php \
     podman \
