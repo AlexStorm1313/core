@@ -84,7 +84,7 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     bun add -g --trust opencode-ai && \
     # bun install -g --trust @opencode/cli && \
     # Install OpenClaw and dsh using npm
-    npm install -g openclaw @deepseek-ai/dsh && \
+    npm install -g openclaw @deepseek-ai/dsh@next && \
     # Cleanup
     dnf -y clean all && \
     rm -rf /var/cache/dnf && \
