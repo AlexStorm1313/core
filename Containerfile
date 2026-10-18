@@ -57,8 +57,8 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     git \
     hostname \
     libpq-devel \
-    # nodejs \
-    # npm \
+    nodejs \
+    npm \
     oci-cli \
     openssh-server \
     opentofu \
@@ -81,8 +81,10 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     cargo install --locked cargo-lambda && \
     # Install Bun
     curl -fsSL https://bun.sh/install | sh && \
-    bun add -g openclaw opencode-ai @deepseek-ai/dsh && \
+    bun add -g --trust opencode-ai && \
     # bun install -g --trust @opencode/cli && \
+    # Install OpenClaw and dsh using npm
+    npm install -g openclaw @deepseek-ai/dsh && \
     # Cleanup
     dnf -y clean all && \
     rm -rf /var/cache/dnf && \
@@ -102,9 +104,9 @@ RUN codium --user-data-dir ${HOME}/.vscodium-server/data --extensions-dir ${HOME
     --install-extension HashiCorp.terraform
 
 # SHELL setup
-RUN echo 'alias openclaw="bunx --bun openclaw"' >> ${HOME}/.bashrc
-RUN echo 'alias opencode="bunx --bun opencode"' >> ${HOME}/.bashrc
-RUN echo 'alias dsh="bunx --bun dsh"' >> ${HOME}/.bashrc
+# RUN echo 'alias openclaw="bunx --bun openclaw"' >> ${HOME}/.bashrc
+# RUN echo 'alias opencode="bunx --bun opencode"' >> ${HOME}/.bashrc
+# RUN echo 'alias dsh="bunx --bun dsh"' >> ${HOME}/.bashrc
 RUN echo 'eval "$(starship init bash)"' >> ${HOME}/.bashrc
 
 # Changing ownership and user rights to support following use-cases:
