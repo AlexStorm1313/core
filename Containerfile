@@ -81,8 +81,8 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     cargo install --locked cargo-lambda && \
     # Install Bun
     curl -fsSL https://bun.sh/install | sh && \
-    bun add -g openclaw @deepseek-ai/dsh && \
-    bun install -g --trust @opencode/cli && \
+    bun add -g openclaw opencode-ai @deepseek-ai/dsh && \
+    # bun install -g --trust @opencode/cli && \
     # Cleanup
     dnf -y clean all && \
     rm -rf /var/cache/dnf && \
