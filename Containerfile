@@ -18,6 +18,7 @@ ENV LC_ALL=C.UTF-8
 ENV HOME=${HOME}
 ENV SHELL=/bin/bash
 ENV PATH=${HOME}/.cargo/bin:${HOME}/.bun/bin:${HOME}/.local/bin:${PATH}
+ENV HERMES_RUNTIME_DIR=/opt/hermes/tools
 
 RUN groupadd -g ${UID} ${USER} && \
     useradd -u ${UID} -g ${UID} -m -s $SHELL ${USER}
