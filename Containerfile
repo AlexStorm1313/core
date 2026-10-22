@@ -57,8 +57,6 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     git \
     hostname \
     libpq-devel \
-    nodejs \
-    npm \
     oci-cli \
     openssh-server \
     opentofu \
@@ -73,6 +71,8 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     unzip \
     uv \
     which && \
+    # Install Hermes agent
+    curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --dir /opt/hermes && \
     # Install Rust and Cargo tools
     rustup-init -y --profile=default --default-toolchain=nightly && \
     cargo install --locked watchexec-cli && \
@@ -83,8 +83,6 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     curl -fsSL https://bun.sh/install | sh && \
     bun add -g --trust opencode-ai && \
     # bun install -g --trust @opencode/cli && \
-    # Install OpenClaw and dsh using npm
-    npm install -g openclaw @deepseek-ai/dsh@next && \
     # Cleanup
     dnf -y clean all && \
     rm -rf /var/cache/dnf && \
@@ -104,9 +102,7 @@ RUN codium --user-data-dir ${HOME}/.vscodium-server/data --extensions-dir ${HOME
     --install-extension HashiCorp.terraform
 
 # SHELL setup
-# RUN echo 'alias openclaw="bunx --bun openclaw"' >> ${HOME}/.bashrc
-# RUN echo 'alias opencode="bunx --bun opencode"' >> ${HOME}/.bashrc
-# RUN echo 'alias dsh="bunx --bun dsh"' >> ${HOME}/.bashrc
+RUN echo 'alias opencode="bunx --bun opencode"' >> ${HOME}/.bashrc
 RUN echo 'eval "$(starship init bash)"' >> ${HOME}/.bashrc
 
 # Changing ownership and user rights to support following use-cases:
@@ -120,8 +116,9 @@ RUN echo 'eval "$(starship init bash)"' >> ${HOME}/.bashrc
 # UID=1001 && GID=0
 # UID=<any>&& GID=0
 # UID=1001 && GID=<any>
-RUN chown -R ${UID}:${GID} ${HOME} && \
-    chmod -R g=u ${HOME}
+# Hermes locks and rebuilds the web UI in its checkout, even with a separate HERMES_HOME.
+RUN chown -R ${UID}:${GID} ${HOME} /opt/hermes && \
+    chmod -R g=u ${HOME} /opt/hermes
 
 # Set fixed non-root user for compatibility with Podman/Docker and Kubernetes
 USER ${UID}
