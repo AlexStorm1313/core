@@ -58,6 +58,8 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     git \
     hostname \
     libpq-devel \
+    nodejs \
+    npm \
     oci-cli \
     openssh-server \
     opentofu \
@@ -72,8 +74,6 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     unzip \
     uv \
     which && \
-    # Install Hermes agent
-    curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --dir /opt/hermes && \
     # Install Rust and Cargo tools
     rustup-init -y --profile=default --default-toolchain=nightly && \
     cargo install --locked watchexec-cli && \
@@ -82,8 +82,9 @@ RUN curl -fsSL https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
     cargo install --locked cargo-lambda && \
     # Install Bun
     curl -fsSL https://bun.sh/install | sh && \
-    bun add -g --trust opencode-ai && \
-    # bun install -g --trust @opencode/cli && \
+    bun install -g --trust @opencode/cli && \
+    # Install Hermes agent
+    curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --dir /opt/hermes && \
     # Cleanup
     dnf -y clean all && \
     rm -rf /var/cache/dnf && \
